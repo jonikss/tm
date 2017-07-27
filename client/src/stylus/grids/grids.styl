@@ -1,0 +1,456 @@
+$gridDebug = false
+$initialFontSize = 1rem
+
+//$grid-system = 'inline-block'
+//$grid-system = 'float'
+$grid-system = 'flex'
+
+
+$columns = 12
+$gutter = 30px
+
+percentage($n)
+  if $n == 0
+    0
+  else
+    unit($n * 100, "%")
+
+logi($msg)
+    body:before
+        content: $msg;
+        display block
+        font-size 28px
+        background red
+        color #fff
+        padding 30px
+
+
+
+
+$grids = {
+
+    xs: {
+        breakpoint: 480px,
+        container: 100%
+    },
+
+    sm: {
+        breakpoint: 768px,
+        container: 720px + $gutter
+    },
+
+    md: {
+        breakpoint: 992px,
+        container: 940px + $gutter
+    },
+
+    /*lg: {
+        breakpoint: 1200px,
+        container: 1140px + $gutter
+    }*/
+
+    lg: {
+        breakpoint: 1290px,
+        container: 1220px + $gutter
+    }
+
+}
+
+
+
+
+
+$names = keys($grids)
+$lengthNames = length($names)
+
+
+for  $name, $grid in $grids
+    //Определяем переменный для медиа запросов
+    define('$screen-' + $name, $grid.breakpoint)
+    define('$screen-' + $name + '-min', $grid.breakpoint)
+
+    //Определяем размеры контейнера
+    define('$container-' + $name, $grid.container)
+
+
+
+
+
+for  $name, $num in $names
+    if $num < ($lengthNames - 1)
+        define('$screen-' + $names[$num] + '-max', lookup('$screen-' + $names[$num+1] + '-min') - 1)
+
+
+
+$clearfix
+  &:before,
+  &:after
+    content " " // 1
+    display table // 2
+
+  &:after
+    clear both
+
+
+//Медиа миксины
+mediamin($name)
+    if $name in $names
+        if $name == $names[0]
+            {block}
+        else
+            @media (min-width lookup('$screen-' + $name))
+                {block}
+
+mediamax($name)
+    if $name in $names
+        if $name == last($names)
+            {block}
+        else
+            @media (max-width lookup('$screen-' + $name + '-max'))
+                {block}
+
+mediaminmax($name)
+    if $name in $names
+        if $name == $names[0]
+            @media (max-width lookup('$screen-' + $name + '-max'))
+                {block}
+        else if $name == last($names)
+            @media (min-width lookup('$screen-' + $name))
+                {block}
+        else
+            @media (min-width lookup('$screen-' + $name)) and (max-width lookup('$screen-' + $name + '-max'))
+                {block}
+
+$float-container-fluid
+    margin-right auto
+    margin-left auto
+    padding-left ($gutter / 2)
+    padding-right ($gutter / 2)
+    @extend $clearfix
+
+$ib-container-fluid
+    margin-right auto
+    margin-left auto
+    padding-left ($gutter / 2)
+    padding-right ($gutter / 2)
+    //@extend $clearfix
+
+$flex-container-fluid
+    margin-right auto
+    margin-left auto
+    padding-left ($gutter / 2)
+    padding-right ($gutter / 2)
+
+
+$container-fluid
+    if($grid-system == 'inline-block')
+        @extend $ib-container-fluid
+    if($grid-system == 'float')
+        @extend $float-container-fluid
+    if($grid-system == 'flex')
+        @extend $flex-container-fluid
+
+$container
+    @extend $container-fluid
+    for  $name, $grid in $grids
+        +mediamin($name)
+            max-width lookup('$container-' + $name)
+
+
+
+
+$float-row
+    margin-left ceil($gutter / -2)
+    margin-right floor($gutter / -2)
+    @extend $clearfix
+
+$ib-row
+    margin-left ceil($gutter / -2)
+    margin-right floor($gutter / -2)
+    @extend $clearfix
+    font-size 0
+
+$flex-row
+    margin-left ceil($gutter / -2)
+    margin-right floor($gutter / -2)
+    display: flex;
+    flex: 0 1 auto;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+$row
+    if($grid-system == 'inline-block')
+        @extend $ib-row
+    if($grid-system == 'float')
+        @extend $float-row
+    if($grid-system == 'flex')
+        @extend $flex-row
+
+row()
+    @extend $row !optional
+
+
+$float-col
+    display block
+    //position relative
+    min-height 1px
+    padding-left ($gutter / 2)
+    padding-right ($gutter / 2)
+
+    float left
+
+$ib-col
+    display inline-block
+    //position relative
+    min-height 1px
+    padding-left ($gutter / 2)
+    padding-right ($gutter / 2)
+
+    font-size $initialFontSize
+    vertical-align top
+    width 100%
+
+$flex-col
+
+    flex: 0 0 auto;
+    min-height 1px
+    padding-left ($gutter / 2)
+    padding-right ($gutter / 2)
+
+    flex: 0 0 100%
+    max-width 100%
+
+$col
+    if($grid-system == 'inline-block')
+        @extend $ib-col
+    if($grid-system == 'float')
+        @extend $float-col
+    if($grid-system == 'flex')
+        @extend $flex-col
+
+
+
+// Columns
+for $name, $grid in $grids
+
+    // Колонки на основе inline-block
+    for $index in (1..$columns)
+        $ib-col-{$name}-{$index}
+            @extend $ib-col
+            +mediamin($name)
+                width percentage(($index / $columns))
+
+    // Колонки на сонове float
+    for $index in (1..$columns)
+        $float-col-{$name}-{$index}
+            @extend $float-col
+            +mediamin($name)
+                width percentage(($index / $columns))
+
+    for $index in (1..$columns)
+        $flex-col-{$name}-{$index}
+            @extend $flex-col
+            +mediamin($name)
+                flex: 0 0 percentage($index / $columns);
+                //max-width: percentage($index / $columns);
+
+    //По-умолчанию колонки
+    for $index in (1..$columns)
+        $col-{$name}-{$index}
+            if($grid-system == 'inline-block')
+                @extend $ib-col-{$name}-{$index}
+            if($grid-system == 'float')
+                @extend $float-col-{$name}-{$index}
+            if($grid-system == 'flex')
+                @extend $flex-col-{$name}-{$index}
+
+
+    //Выравнивание колонок
+    $start-{$name}
+        +mediamin($name)
+            justify-content: flex-start;
+            text-align: start;
+
+    $center-{$name}
+        +mediamin($name)
+            justify-content: center;
+            text-align: center;
+
+    $end-{$name}
+        +mediamin($name)
+            justify-content: flex-end;
+            text-align: end;
+
+    $top-{$name}
+        +mediamin($name)
+            align-items: flex-start
+
+    $middle-{$name}
+        +mediamin($name)
+            align-items: center
+
+    $bottom-{$name}
+        +mediamin($name)
+            align-items: flex-end
+
+    $around-{$name}
+        +mediamin($name)
+            justify-content: space-around;
+
+    $between-{$name}
+        +mediamin($name)
+            justify-content: space-between;
+
+    $first-{$name}
+        +mediamin($name)
+            order: -1;
+
+    $last-{$name}
+        +mediamin($name)
+            order: 1;
+
+
+
+
+
+    //Формируем Push, Pull и Offset
+    for $index in (0..$columns)
+
+        //Push
+        if $index == 0
+            $col-{$name}-push-0
+                +mediamin($name)
+                    position relative
+                    left auto
+        else
+            $col-{$name}-push-{$index}
+                +mediamin($name)
+                    position relative
+                    left percentage(($index / $columns))
+
+        //Pull
+        if $index == 0
+            $col-{$name}-pull-0
+                +mediamin($name)
+                    position relative
+                    right auto
+        else
+            $col-{$name}-pull-{$index}
+                +mediamin($name)
+                    position relative
+                    right percentage(($index / $columns))
+
+        //Offset
+        $col-{$name}-offset-{$index}
+            +mediamin($name)
+                margin-left percentage(($index / $columns))
+
+
+// Mixins for grids system
+
+
+
+
+
+col($name,$col)
+    @extend {'$col-' + $name + '-' + $col} !optional
+
+flex-col($name,$col)
+    @extend {'$flex-col-' + $name + '-' + $col} !optional
+
+float-col($name,$col)
+    @extend {'$float-col-' + $name + '-' + $col} !optional
+
+ib-col($name,$col)
+    @extend {'$ib-col-' + $name + '-' + $col} !optional
+
+col-push($name,$index)
+    @extend {'$col-' + $name + '-push-' + $index} !optional
+
+col-pull($name,$index)
+    @extend {'$col-' + $name + '-pull-' + $index} !optional
+
+col-offset($name,$index)
+    @extend {'$col-' + $name + '-offset-' + $index} !optional
+
+
+
+
+
+
+
+
+// Visibility utilities
+$hidden
+    display none!important
+
+
+for $name, $grid in $grids
+
+    $hidden-{$name}
+        +mediaminmax($name)
+            display none !important
+
+    $visible-{$name}
+        @extend $hidden
+        +mediaminmax($name)
+            display block !important
+
+    $visible-{$name}-block
+        @extend $hidden
+        +mediaminmax($name)
+            display block !important
+
+    $visible-{$name}-inline
+        @extend $hidden
+        +mediaminmax($name)
+            display inline !important
+
+    $visible-{$name}-inline-block
+        @extend $hidden
+        +mediaminmax($name)
+            display inline-block !important
+
+
+
+
+visible($name)
+    @extend {'$visible-' + $name} !optional
+
+visible-block($name)
+    @extend {'$visible-' + $name + '-block'} !optional
+
+visible-inline($name)
+    @extend {'$visible-' + $name + '-inline'} !optional
+
+visible-inline-block($name)
+    @extend {'$visible-' + $name + '-inline-block'} !optional
+
+hidden($name)
+    @extend {'$hidden-' + $name} !optional
+
+if ($gridDebug)
+    html
+        &:before
+            content ''
+            position fixed
+            top 0
+            left 50%
+            height 100%
+            opacity .2
+
+            $color1 = blue
+            $color2 = pink
+            $semmiGutter = ($gutter / 2)
+            $grads = ' ,  ' + $color1 + ' 0px,' + $color1 + ' ' + $semmiGutter + ', ' +  $color2 + ' ' + $semmiGutter + ''
+            for $index in (1..$columns)
+                $pos = percentage($index / $columns)
+                //$posLeft = ' #FFC1CB calc(' + $pos '- 15px), '
+                //$posRight = ' calc(' + $pos '+ 15px)'
+                //$grads = $grads + $posLeft +', #FFC1CB ' + $pos
+                $grads = $grads + ' , ' + $color2 + ' calc(' + $pos + ' - ' + $semmiGutter + '),  ' + $color1 + ' calc(' + $pos + ' - ' + $semmiGutter + '), ' + $color1 + ' calc(' + $pos + ' + ' + $semmiGutter + '),  ' + $color2 + ' calc(' + $pos + ' + ' + $semmiGutter + ') '
+            background-image linear-gradient(to right + $grads)
+            for  $name, $grid in $grids
+                +mediamin($name)
+                    width: ($grid.container)
+                    margin-left: -($grid.container / 2)

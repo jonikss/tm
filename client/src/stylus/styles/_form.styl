@@ -1,0 +1,380 @@
+
+.form
+    font-size inherit
+    line-height inherit
+    position relative
+    &--dark
+        //background $color
+        //padding 20px
+        //margin 3rem 0
+
+    .form__elem--input label, .form__elem--textarea label, .form__elem-select label, .form__elem-multiselect label
+        display block
+        width 100%
+        margin 0 0 .5rem 0
+        user-select none
+        opacity 1
+        &:focus
+            outline  none
+
+
+
+        &.required:after
+            content '*';
+            color inherit
+            display inline-block
+            margin-left 4px
+
+
+    textarea,
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="search"],
+    input[type="password"]
+        display: inline-block;
+        position relative
+        z-index 1
+        width 100%
+        font-size 1.6rem
+        line-height 2.6rem
+        border-radius 4px
+        padding .85rem 1.6rem
+        vertical-align:middle;
+        margin:0;
+        color $color
+        font-weight: normal;
+        border none
+        border 1px solid #b5bac9
+        background #fff
+        transition opacity .15s, border-color .15s;
+        outline none
+
+        &:focus
+            border-color $blue
+
+
+        &[disabled]
+            opacity .3
+            & + div label
+                opacity .3
+
+    textarea
+        max-height:120px;
+        min-height:120px;
+        max-width 100%
+        transition: max-height .1s ease-in-out
+
+    input[type="checkbox"],
+    input[type="radio"]
+        height:1em;
+        padding:0;
+        float:left;
+        line-height:inherit;
+        cursor: pointer
+
+
+    input[type="checkbox"][disabled],
+    input[type="radio"][disabled],
+    input[type="checkbox"][disabled] + label,
+    input[type="radio"][disabled] + label
+        cursor:default;
+        opacity:0.4;
+
+
+    .form__elem-select, .form__elem-multiselect
+        margin: 0 0 1em 0
+        padding-top: 1rem
+
+
+
+    select
+        display: inline-block;
+        position relative
+        z-index 1
+        width 100%
+        font-size 1.6rem
+        line-height 2.6rem
+        padding 1.3rem 1.4rem 1.4rem 1.4rem
+        vertical-align middle;
+        margin:0;
+        color $color
+        font-weight normal
+        border none
+        border 1px solid #e1e1e1
+        border-radius 4px
+        background #fff
+        transition opacity .15s, border-color .15s;
+        outline none
+
+        &:focus
+            border-color #353535
+
+
+        &[disabled]
+            opacity .3
+            & + div label
+                opacity .3
+
+
+
+
+
+
+
+    fieldset
+        margin:0;
+        padding: 0;
+        background:transparent;
+        border:none;
+        width:100%;
+
+
+    &>fieldset
+        margin: 0 0 1em 0;
+
+
+    legend
+        display:block;
+        font-size:inherit;
+        font-weight:bold;
+        font-style:normal;
+        margin:0;
+        padding:0;
+        line-height:inherit;
+
+
+
+
+    &__elem
+        margin: 0 0 1rem 0;
+        position relative
+        //overflow hidden
+
+
+    &__elem table
+        width: 100%;
+
+
+    &__elem table td
+        vertical-align: top
+
+    &__error,  label&__error
+        color #e91c24!important
+
+    &__error + &__field input
+       border-color #e91c24
+       color #e91c24
+
+    &__error + div textarea
+        border-color #e91c24
+        color #e91c24
+
+    &__error + div select
+        border-color #e91c24
+        color #e91c24
+
+
+    &__note
+        margin: 10px 0
+        color #999999
+
+
+    &__help
+        display:block;
+        font-size:inherit;
+        line-height:inherit;
+        padding:0;
+        color:inherit;
+
+
+    &__fields
+        display flex
+        justify-content space-between
+
+
+        div
+            flex 0 0 49%
+
+
+    &__field
+        &--date, &--time
+            position relative
+            input
+                padding-right 4rem
+            &:before
+                content ''
+                position absolute
+                width 4rem
+                height 4rem
+                right 0
+                top 0
+                border-left 1px solid #d7d7d7
+                z-index 2
+        &--date:before
+            //icon 'date'
+        &--time:before
+            //icon 'time'
+
+
+    /*Checkbox  styling*/
+    &__elem-checkbox, &__elem-radio
+        margin: 0 0 1rem 0;
+
+    &__elem-checkbox  input[type="checkbox"], &__elem-radio  input[type="radio"]
+        left -5000px
+        position absolute
+
+
+    &__elem-checkbox  input[type="checkbox"] + label, &__elem-radio  input[type="radio"] + label
+        cursor pointer
+        user-select none
+        color $color
+        font-weight normal
+        margin-bottom 1.6rem
+        margin-right 1.6rem
+        font-size 1.6rem
+
+
+    &__elem-checkbox  input[type="checkbox"] + label:before, &__elem-radio  input[type="radio"] + label:before
+        content ''
+        display inline-block
+        height 2rem
+        width 2rem
+        margin 0 1rem 0 0
+        position relative
+        top .5rem
+        background #fff
+        border 1px solid #b5bac9
+
+
+    &__elem-checkbox  input[type="checkbox"] + label:before
+        //
+
+    &__elem-radio  input[type="radio"] + label:before
+        border-radius 2rem
+
+
+    &__elem-checkbox input[type="checkbox"]:checked + label:before
+        //svg 'checkbox'
+        background-size 2rem 2rem
+        background-position center center
+        background-repeat no-repeat
+        border-color $pink
+
+
+
+    &__elem-radio input[type="radio"]:checked + label:before
+        //svg 'radio'
+        background-size 2rem 2rem
+        background-position center center
+        background-repeat no-repeat
+        border-color $pink
+
+
+    &__elem-checkbox input[type="checkbox"]:checked + label, &__elem-radio  input[type="radio"]:focus + label
+        //color #000
+
+    &__elem-checkbox input[type="checkbox"]:checked + label
+        //color $pink
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    &__field-file
+        position relative
+        //overflow hidden
+        display inline-block
+        color $color
+        border-bottom 1px dotted rgba($color,.3)
+        margin-left 20px
+        &:hover
+            border-bottom 1px solid rgba($color,.3)
+
+        &:before
+            content ''
+            position absolute
+            left -20px
+            top 6px
+            //@extend $icon-fileitem
+            display block
+            margin-right 10px
+
+    &__field-file input[type=file]
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        padding: 0;
+        font-size: 20px;
+        cursor: pointer;
+        opacity: 0;
+
+
+    &__btn
+        @extend .btn, .button
+
+
+    &__elem--file
+        font-size: 0
+        margin: 40px 0
+        input
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+
+        label
+            @extend .btn
+
+    &__elem-fileresult
+        display: inline-block;
+        font-size: 1.6rem
+        color #000
+        margin-left: 50px
+        font-weight: normal;
+
+    &__elem-fileremove
+        display: inline-block;
+        //@extend $icon-file-remove
+        margin-left: 15px
+        vertical-align: middle;
+        position: relative;
+        top -1px
+        cursor: pointer;
+        &:hover
+            opacity: .7
+
+
+placeholder
+    color $color
+
+:-webkit-input-placeholder
+    color $color
+
+::-webkit-input-placeholder
+    color $color
+
+:-moz-placeholder
+    color $color
+
+::-moz-placeholder
+    color $color
+
+:-ms-input-placeholder
+    color $color

@@ -1,0 +1,29 @@
+.paginator
+    width 100%
+
+    &__items
+        display flex
+        flex-wrap wrap
+        justify-content center
+
+    &__item
+        background-color: rgba(92,209,235,0.5)
+        border: 1px solid #85d6e7
+        border-radius: 3px
+        margin 0 .3rem
+
+    &__item-link, &__item-span, &__item-dots
+        display block
+        line-height 3.5rem
+        min-width 3.5rem
+        text-align center
+        color #fff
+
+    &__item-link
+        &:hover
+            color #fff
+            background #85d6e7
+
+    &__item-span
+        background #fff
+        color #85d6e7

@@ -1,0 +1,55 @@
+@import '../../stylus/grids/grids.styl'
+svg(name, sizes=false)
+    images_url = '../../images/svg/'
+
+    if sizes
+        block_size = image-size(images_url + name + '.svg')
+        width block_size[0]
+        height block_size[1]
+
+    background-image embedurl(images_url + name + '.svg')
+
+.categories
+    width 100%
+
+
+    &__wrap
+        background-color #fff
+        border-radius 8px
+        color #999999
+        padding 3rem
+
+
+    &__item:not(:last-child)
+        margin-bottom 1rem
+
+    &__label
+        display inline-block
+        vertical-align middle
+        position relative
+        overflow hidden
+        width 1.8rem
+        height 1.8rem
+        background-color rgba(92,209,235,0.5)
+        border 1px solid #85d6e7
+        border-radius 3px
+        margin-right 1rem
+        cursor pointer
+
+    &__checkbox
+        position absolute
+        left -500rem
+
+    &__checkbox:checked + &__label
+        svg 'checkbox'
+        background-size 1.5rem 1.5rem
+        background-position center
+
+    &__link
+        cursor pointer
+        font-size 1.5rem
+        color #417884
+
+    &__count
+        font-size 1.3rem
+        color #85d6e7

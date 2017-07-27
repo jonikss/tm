@@ -1,0 +1,24 @@
+{
+  "name": "tm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prod": "node ./index.js",
+    "watch": "nodemon ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "dotenv": "^4.0.0",
+    "es6-error": "^4.0.2",
+    "es6-promisify": "^5.0.0",
+    "mongoose": "^4.10.8",
+    "request": "^2.81.0",
+    "unzip": "^0.1.11",
+    "xml-nodes": "^0.1.5",
+    "xml-objects": "^1.0.1"
+  }
+}

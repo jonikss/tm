@@ -1,0 +1,80 @@
+$borderlink
+    color #3390ff
+    text-decoration none
+    border-bottom 1px solid alpha(@color, .25)
+    transition border-color .3s, color .3s
+    &:hover
+        color #ffa840
+        border-bottom 1px solid alpha(@color, .25)
+$link
+    text-decoration none
+    color:$colorLink
+    border-bottom 1px solid rgba(@color,.3)
+    transition color .3s
+
+
+    &:hover
+        color $colorLinkHover
+        border-bottom 1px solid rgba(@color,.3)
+
+
+    &:active
+        color $colorLinkActive
+        border-bottom 1px solid rgba(@color,.3)
+
+
+$blick
+    +mediamin('md')
+        position relative
+        display block
+        overflow hidden
+        &:before
+            content ''
+            position absolute
+            width: 200%;
+            height: 100%;
+            top: -200%;
+            left: -40%;
+            opacity: 0.6;
+            background-image: linear-gradient(180deg, rgba(255, 255, 255, 0), #ffffff 47%, rgba(255, 255, 255, 0.6) 53%, rgba(255, 255, 255, 0));
+            background-image: linear-gradient(180deg, rgba(255, 255, 255, 0), #ffffff calc(50% - 10px), rgba(255, 255, 255, 0.6) calc(50% + 10px), rgba(255, 255, 255, 0));
+            transform: rotate(-20deg);
+        &:hover:before
+            top:200%;
+            transition: top 0.4s cubic-bezier(0, 0.3, 1, 0.7);
+
+$chain
+    position relative
+    svg 'chain-mid'
+    background-size 53px 16px
+    background-repeat repeat-x
+    &:after
+        content ''
+        position absolute
+        right 0
+        top 0
+
+$img
+    max-width: 100%
+
+$back
+    border-radius 5px
+    background-color #fff
+    box-shadow 0 1px 1px rgba(117,76,36,.03)
+
+$cont
+    col('xl',8)
+    col-push('xl', 2)
+    col('md', 10)
+    col-push('md', 1)
+    col('sm',12)
+
+$content
+    &__wrap
+        @extend $container-fluid
+
+    &__row
+        @extend $row
+
+    &__content
+        @extend $cont

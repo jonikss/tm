@@ -1,0 +1,47 @@
+@import '../../stylus/grids/grids.styl'
+
+.main
+
+
+    &__wrap
+        @extend $container
+        height 100%
+
+    &__content
+        height 100%
+        background-color rgba(92, 209, 235, 0.5)
+        border 1px solid #85d6e7
+        border-radius 8px
+        padding 3rem
+
+    &__row
+        @extend $row
+
+    &__left
+        col('md',4)
+        display flex
+
+    &__right
+        col('md', 8)
+        display flex
+
+.router-enter {
+  opacity: 0;
+  transform: translateX(-250px);
+}
+.router-enter.router-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: 3s;
+}
+
+.router-leave {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.router-leave.router-leave-active {
+  opacity: 0;
+  transform: translateX(250px);
+  transition: 3s;
+}

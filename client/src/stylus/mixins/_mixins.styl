@@ -1,0 +1,178 @@
+//@import 'remify.styl'
+//@import 'fontsize.styl'
+@import 'icon.styl'
+// fonts
+
+
+
+
+// blocks
+boxreset(margin = 0, padding = 0)
+    margin margin
+    padding padding
+
+inlineblock(verticalAlign = top)
+    vertical-align verticalAlign
+    display inline-block
+
+clearfix()
+    &:before, &:after
+        content ''
+        display table
+    &:after
+        clear both
+
+
+// fucking safari bug
+borderline(direction, width, style, color)
+    border 0 style color
+    border-{direction}-width width
+
+
+
+
+// triangles
+triangle(params)
+    width 0
+    height 0
+    border-style solid
+    directions = {
+        top: {
+            border-width: 0 (params.width * .5) params.height (params.width * .5),
+            border-color: transparent transparent params.color transparent
+        },
+        topRight: {
+            border-width: 0 params.width params.height 0,
+            border-color: transparent params.color transparent transparent
+        },
+        right: {
+            border-width: (params.height * .5) 0 (params.height *.5) params.width,
+            border-color: transparent transparent transparent params.color
+        },
+        bottomRight: {
+            border-width: 0 0 params.height params.width,
+            border-color: transparent transparent params.color transparent
+        },
+        bottom: {
+            border-width: params.height (params.width * .5) 0 (params.width * .5),
+            border-color: params.color transparent transparent transparent
+        },
+        bottomLeft: {
+            border-width: params.width 0 0 params.height,
+            border-color: transparent transparent transparent params.color
+        },
+        left: {
+            border-width: (params.height * .5) params.width (params.height * .5) 0,
+            border-color: transparent params.color transparent transparent
+        },
+        topLeft: {
+            border-width: params.height params.width 0 0,
+            border-color: params.color transparent transparent transparent
+        }
+    }
+    styles = directions[params.direction]
+    {styles}
+
+// linkborder
+borderlink(color, opacity=.25)
+    text-decoration none
+    color color!important
+
+    border-bottom 1px  solid alpha(color,opacity)!important
+    transition border-color .3s!important
+    &:hover
+        color color!important
+        border-bottom 1px  solid alpha(color,1)!important
+
+link( opacity=.25)
+    text-decoration none
+    color $colorLink!important
+    border-bottom 1px  solid alpha($colorLink,opacity)!important
+    transition border-color .2s, color .2s!important
+    &:hover
+        color $colorLinkHover!important
+        border-bottom 1px  solid alpha($colorLinkHover,1)!important
+
+jslink(color, opacity=.25)
+    text-decoration none
+    color color
+
+    border-bottom 1px  dotted alpha(color,opacity)
+    transition border-color .3s
+    &:hover
+        color color
+        border-bottom 1px  dotted alpha(color,1)
+
+borderlinkblock(color, opacity=.25)
+    borderlink(color, opacity)
+    &:after, &:before
+        content ''
+        display block
+
+getHex(foreground, opacity=1, background = '#fff')
+
+    red=red(foreground)
+    green = green(foreground)
+    blue = blue(foreground)
+
+    if (opacity < 1)
+
+        alpha = 1 - opacity
+
+        bgRed = red(background)
+        bgGreen = green(background)
+        bgBlue = blue(background)
+
+        red = round((opacity * red / 255 + alpha * bgRed / 255) * 255);
+        green = round((opacity * green / 255 + alpha * bgGreen / 255) * 255);
+        blue = round((opacity * blue / 255 + alpha * bgBlue / 255) * 255);
+
+
+    rgb(red, green, blue)
+
+bg(name, sizes=false)
+    images_dir = '../../i/svg-icons/build/'
+    images_url = '/media/i/svg-icons/build/'
+    svgpath(name)
+        return images_dir + name + '.svg'
+    pngurl(name)
+        return images_url + name + '.png'
+
+    if sizes
+        block_size = image-size(svgpath(name))
+        width block_size[0]
+        height block_size[1]
+
+    background-image embedurl(svgpath(name))
+    .mzno-svg &
+        background-image url(pngurl(name))
+
+png(name, sizes=false)
+    images_url = 'images/'
+
+    if sizes
+        block_size = image-size(images_url + name + '.png')
+        width (block_size[0]/10)rem
+        height (block_size[1]/10)rem
+        background-size (block_size[0]/10)rem  (block_size[1]/10)rem
+
+    background-image embedurl(images_url + name + '.png')
+
+svg(name, sizes=false)
+    images_url = '../../images/svg/'
+
+    if sizes
+        block_size = image-size(images_url + name + '.svg')
+        width block_size[0]
+        height block_size[1]
+
+    background-image embedurl(images_url + name + '.svg')
+
+centring(width,height)
+    width width
+    height height
+    position absolute
+    left 50%
+    top 50%
+    margin-top ceil(height / -2)
+    margin-left ceil(width / -2)

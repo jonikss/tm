@@ -1,0 +1,9 @@
+jpg(name, sizes=false)
+    images_url = '../../i/'
+
+    if sizes
+        block_size = image-size(images_url + name + '.jpg')
+        width block_size[0]
+        height block_size[1]
+
+    background-image embedurl(images_url + name + '.jpg')

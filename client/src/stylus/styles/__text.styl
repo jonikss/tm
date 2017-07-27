@@ -1,0 +1,309 @@
+.text
+    margin:0 0 0px 0
+    padding-top:1px
+
+
+
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6
+        margin-top 0
+
+    *+h1,
+    *+h2,
+    *+h3,
+    *+h4,
+    *+h5,
+    *+h6
+        margin-top 4rem
+
+    a
+        text-decoration none
+        color:$colorLink
+        transition color .3s
+
+        &:visited
+            color:$colorLinkVisited
+
+        &:hover
+            color $colorLinkHover
+            border-bottom 1px solid rgba(@color,.3)
+
+
+        &:active
+            color $colorLinkActive
+            border-bottom 1px solid rgba(@color,.3)
+
+
+
+
+    p
+        margin: 0 0 .8em 0
+
+
+    ul
+        position relative
+        margin 2.4rem 0
+        padding 0 0 0 1rem
+
+        ul
+            margin-top .8em
+            margin-bottom 0
+
+        &>li
+            margin 0 0 .8em 0
+            padding 0 0 0 2rem
+            position relative
+
+            &:before
+                content ''
+                position absolute
+                left 0
+                top 1rem
+                background $blue
+                border-radius .6rem
+                width .6rem
+                height .6rem
+
+
+
+
+
+
+    ol
+        counter-reset:point
+        margin 2.4rem 0
+        padding: 0
+
+        li
+            margin: 0 0 .8em .8em
+
+        &>li:before
+            display:inline-block
+            content:counter(point) "."
+            counter-increment:point 1
+            //position:absolute
+            left 2rem
+            font-size:inherit
+            line-height:inherit
+            text-align:center
+            font-style:normal
+            margin:0 1.2rem
+            color $blue
+
+        ol
+            counter-reset point2
+            margin-left 2.4rem
+            margin-top .8em
+            margin-bottom 0
+
+        ol>li:before
+            content:counter(point) "." counter(point2) "."
+            counter-increment:point2 1
+
+
+
+        ol ol
+            counter-reset:point3
+
+
+        ol ol>li:before
+            content:counter(point) "." counter(point2) "." counter(point3) "."
+            counter-increment:point3 1
+
+
+
+        ol ol ol li:before
+            display:none
+
+    table
+        position:relative
+        margin: 0 0 3.2rem 0
+        border-collapse collapse
+        @media (max-width: $screen-xs-max)
+            overflow-x auto
+            display block
+
+        thead
+            color inherit
+
+
+        caption
+            color #aaaaaa
+            font-size 1.4rem
+            text-align: left
+            vertical-align: top
+            padding:0
+            margin 1.6rem 0
+
+        th, td
+            padding 1rem 2rem
+
+        td
+            font-weight normal
+            border-left 1px solid #ececec
+            &:first-child
+                border-left none
+        tr:nth-child(even) td
+            background #ffffff
+            border-bottom 1px solid #ececec
+
+        tr:last-child td
+            border-bottom 1px solid #ececec
+        th
+            background $blue
+            color #fff
+            vertical-align middle
+            border-left 1px solid #0873b8
+            &:first-child
+                border-left none
+                border-top-left-radius .4rem
+            &:last-child
+                border-top-right-radius .4rem
+
+
+    strong
+        font-weight: bold
+        font-style: italic;
+        color #0f0f0f
+
+
+    em
+        font-weight: normal
+        font-style: italic
+
+
+    img
+        margin: 1.6rem 0
+        @extend $img
+        /*height:auto*/
+
+
+    img[style*="left"]
+        margin:0 2em 1em 0
+
+
+    img[style*="right"]
+        margin:0 0 1em 2em
+
+
+
+    hr
+        display:block
+        width:auto
+        height:1px
+        position:relative
+        color:#e5e5e5
+        font-size:0
+        line-height:1px
+        text-align:left
+        vertical-align:top
+        margin:35px auto
+        border:none
+        background: rgba(#818181,.1)
+        user-select: none
+        cursor:default
+
+
+
+
+
+
+    blockquote
+        position relative
+        background #fff
+        margin 1.6rem 0
+        padding 3rem 8rem
+        font-size 1.8rem
+        line-height 3rem
+        font-weight normal
+        border-bottom  1px dashed rgba(#333333,.2)
+        &:before
+            content '"'
+            position absolute
+            top .8rem
+            left 2rem
+            font-size 12rem
+            line-height 12rem
+            opacity .1
+
+
+    cite
+        display block
+        text-align right
+        font-size 1.7rem
+        margin .2rem 0
+        font-size 1.5rem
+        opacity .6
+
+
+
+
+
+
+
+    figure
+        margin-top .8em
+        margin-bottom .8em
+
+        img
+            margin 0
+
+    figcaption
+        font-size 1.4rem
+        text-align right
+        padding 1rem 0
+        opacity .5
+
+
+
+
+
+
+    .video
+        position relative
+        display block
+        height 0
+        padding 0
+        overflow hidden
+        margin 2em 0
+
+        &__item
+            position absolute
+            top 0
+            left 0
+            bottom 0
+            height 100%
+            width 100%
+            border 0
+
+        &--16x9
+            padding-bottom 56.25%
+        &--4x3
+            padding-bottom 75%
+
+    small
+        font-weight normal
+        margin: 0 0 1.6rem 0
+
+
+hr
+    display:block
+    width:auto
+    height:1px
+    position:relative
+    color: #e2e2e2
+    font-size:0
+    line-height:1px
+    text-align:left
+    vertical-align:top
+    margin:45px auto
+    border:none
+    background: #e2e2e2
+    -webkit-touch-callout: none
+    user-select: none
+    cursor:default

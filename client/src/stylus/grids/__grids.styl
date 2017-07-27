@@ -1,0 +1,366 @@
+$gridDebug = false
+$initialFontSize = 1rem
+
+
+
+
+$columns = 12
+$gutter = 30px
+
+percentage($n)
+  if $n == 0
+    0
+  else
+    unit($n * 100, "%")
+
+logi($msg)
+    body:before
+        content: $msg;
+        display block
+        font-size 28px
+        background red
+        color #fff
+        padding 30px
+
+
+
+
+$grids = {
+
+  xs: {
+    breakpoint: 480px,
+    gutter:20px,
+    container: 100%
+  },
+
+  sm: {
+    breakpoint: 798px,
+    gutter:20px,
+    container: 750px + 20px
+  },
+
+  md: {
+    breakpoint: 1032px,
+    gutter:30px,
+    container: 980px + 30px
+  },
+
+  lg: {
+    breakpoint: 1230px,
+    gutter:30px,
+    container: 1170px + 30px
+  }
+}
+
+
+
+
+
+$names = keys($grids)
+$lengthNames = length($names)
+
+
+for  $name, $grid in $grids
+    //Определяем переменный для медиа запросов
+    define('$screen-' + $name, $grid.breakpoint)
+    define('$screen-' + $name + '-min', $grid.breakpoint)
+
+    //Определяем размеры контейнера
+    define('$container-' + $name, $grid.container)
+
+for  $name, $num in $names
+    if $num < ($lengthNames - 1)
+        define('$screen-' + $names[$num] + '-max', lookup('$screen-' + $names[$num+1] + '-min') - 1)
+
+
+
+$clearfix
+  &:before,
+  &:after
+    content " " // 1
+    display table // 2
+
+  &:after
+    clear both
+
+
+//Медиа миксины
+mediamin($name)
+    if $name in $names
+        if $name == $names[0]
+            {block}
+        else
+            @media (min-width lookup('$screen-' + $name))
+                {block}
+
+mediamax($name)
+    if $name in $names
+        if $name == last($names)
+            {block}
+        else
+            @media (max-width lookup('$screen-' + $name + '-max'))
+                {block}
+
+mediaminmax($name)
+    if $name in $names
+        if $name == $names[0]
+            @media (max-width lookup('$screen-' + $name + '-max'))
+                {block}
+        else if $name == last($names)
+            @media (min-width lookup('$screen-' + $name))
+                {block}
+        else
+            @media (min-width lookup('$screen-' + $name)) and (max-width lookup('$screen-' + $name + '-max'))
+                {block}
+
+grid-padding()
+    for $name, $grid in $grids
+        +mediamin($name)
+            padding-left: ($grid.gutter / 2)
+            padding-right: ($grid.gutter / 2)
+
+grid-margin()
+    for $name, $grid in $grids
+        +mediamin($name)
+            margin-left: ceil($grid.gutter / -2)
+            margin-right: floor($grid.gutter / -2)                      
+
+$container-fluid
+    margin-right auto
+    margin-left auto
+    for $name, $grid in $grids
+        +mediamin($name)
+            padding-left: ($grid.gutter / 2)
+            padding-right: ($grid.gutter / 2)
+
+
+
+$container
+    @extend $container-fluid
+    for  $name, $grid in $grids
+        +mediamin($name)
+            max-width lookup('$container-' + $name)
+
+
+
+
+$row
+    display: flex;
+    flex: 0 1 auto;
+    flex-wrap: wrap;
+    flex-direction: row;
+    for $name, $grid in $grids
+        +mediamin($name)
+            margin-left: ceil($grid.gutter / -2)
+            margin-right: floor($grid.gutter / -2)
+
+row()
+    @extend $row !optional
+
+
+
+$col
+    flex: 0 0 auto;
+    min-height 1px
+    flex: 0 0 100%
+    max-width 100%
+    for $name, $grid in $grids
+        +mediamin($name)
+            padding-left: ($grid.gutter / 2)
+            padding-right: ($grid.gutter / 2)
+
+
+
+// Columns
+for $name, $grid in $grids
+
+
+    //По-умолчанию колонки
+    for $index in (1..$columns)
+        $col-{$name}-{$index}
+            @extend $col
+            +mediamin($name)
+                flex: 0 0 percentage($index / $columns);
+                max-width: percentage($index / $columns);
+
+
+    //Выравнивание колонок
+    $start-{$name}
+        +mediamin($name)
+            justify-content: flex-start;
+            text-align: start;
+
+    $center-{$name}
+        +mediamin($name)
+            justify-content: center;
+            text-align: center;
+
+    $end-{$name}
+        +mediamin($name)
+            justify-content: flex-end;
+            text-align: end;
+
+    $top-{$name}
+        +mediamin($name)
+            align-items: flex-start
+
+    $middle-{$name}
+        +mediamin($name)
+            align-items: center
+
+    $bottom-{$name}
+        +mediamin($name)
+            align-items: flex-end
+
+    $around-{$name}
+        +mediamin($name)
+            justify-content: space-around;
+
+    $between-{$name}
+        +mediamin($name)
+            justify-content: space-between;
+
+    $first-{$name}
+        +mediamin($name)
+            order: -1;
+
+    $last-{$name}
+        +mediamin($name)
+            order: 1;
+
+
+
+
+
+    //Формируем Push, Pull и Offset
+    for $index in (0..$columns)
+
+        //Push
+        if $index == 0
+            $col-{$name}-push-0
+                +mediamin($name)
+                    position relative
+                    left auto
+        else
+            $col-{$name}-push-{$index}
+                +mediamin($name)
+                    position relative
+                    left percentage(($index / $columns))
+
+        //Pull
+        if $index == 0
+            $col-{$name}-pull-0
+                +mediamin($name)
+                    position relative
+                    right auto
+        else
+            $col-{$name}-pull-{$index}
+                +mediamin($name)
+                    position relative
+                    right percentage(($index / $columns))
+
+        //Offset
+        $col-{$name}-offset-{$index}
+            +mediamin($name)
+                margin-left percentage(($index / $columns))
+
+
+// Mixins for grids system
+
+
+
+
+
+col($name,$col)
+    @extend {'$col-' + $name + '-' + $col} !optional
+
+
+col-push($name,$index)
+    @extend {'$col-' + $name + '-push-' + $index} !optional
+
+col-pull($name,$index)
+    @extend {'$col-' + $name + '-pull-' + $index} !optional
+
+col-offset($name,$index)
+    @extend {'$col-' + $name + '-offset-' + $index} !optional
+
+
+
+
+
+
+
+
+// Visibility utilities
+$hidden
+    display none!important
+
+
+for $name, $grid in $grids
+
+    $hidden-{$name}
+        +mediaminmax($name)
+            display none !important
+
+    $visible-{$name}
+        @extend $hidden
+        +mediaminmax($name)
+            display block !important
+
+    $visible-{$name}-block
+        @extend $hidden
+        +mediaminmax($name)
+            display block !important
+
+    $visible-{$name}-inline
+        @extend $hidden
+        +mediaminmax($name)
+            display inline !important
+
+    $visible-{$name}-inline-block
+        @extend $hidden
+        +mediaminmax($name)
+            display inline-block !important
+
+
+
+
+visible($name)
+    @extend {'$visible-' + $name} !optional
+
+visible-block($name)
+    @extend {'$visible-' + $name + '-block'} !optional
+
+visible-inline($name)
+    @extend {'$visible-' + $name + '-inline'} !optional
+
+visible-inline-block($name)
+    @extend {'$visible-' + $name + '-inline-block'} !optional
+
+hidden($name)
+    @extend {'$hidden-' + $name} !optional
+
+if ($gridDebug)
+    html
+        &:before
+            content ''
+            position fixed
+            top 0
+            left 50%
+            height 100%
+            opacity .2
+
+            $color1 = blue
+            $color2 = pink
+
+
+            for  $name, $grid in $grids
+                +mediamin($name)
+                    $semmiGutter = ($grid.gutter / 2)
+                    $grads = ' ,  ' + $color1 + ' 0px,' + $color1 + ' ' + $semmiGutter + ', ' +  $color2 + ' ' + $semmiGutter + ''
+                    for $index in (1..$columns)
+                        $pos = percentage($index / $columns)
+                        $grads = $grads + ' , ' + $color2 + ' calc(' + $pos + ' - ' + $semmiGutter + '),  ' + $color1 + ' calc(' + $pos + ' - ' + $semmiGutter + '), ' + $color1 + ' calc(' + $pos + ' + ' + $semmiGutter + '),  ' + $color2 + ' calc(' + $pos + ' + ' + $semmiGutter + ') '
+                    background-image linear-gradient(to right + $grads)
+                    width: ($grid.container)
+                    margin-left: -($grid.container / 2)
