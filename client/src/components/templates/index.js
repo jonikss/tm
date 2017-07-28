@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './index.styl';
 import Template from '../template';
 import Paginator from '../paginator';
+import ScrollToTop from '../scrolltotop';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -21,7 +22,6 @@ class Templates extends Component {
     componentDidMount() {
         const { match } = this.props;
         this.props.fetchTemplates(match.url);
-        this.scrollToTop(1000);
     }
 
     componentDidUpdate(nextProps) {
@@ -31,25 +31,7 @@ class Templates extends Component {
         }
     }
 
-    scrollToTop(scrollDuration) {
-        var cosParameter = window.scrollY / 2,
-            scrollCount = 0,
-            oldTimestamp = performance.now();
 
-        function step(newTimestamp) {
-            scrollCount +=
-                Math.PI / (scrollDuration / (newTimestamp - oldTimestamp));
-            if (scrollCount >= Math.PI) window.scrollTo(0, 0);
-            if (window.scrollY === 0) return;
-            window.scrollTo(
-                0,
-                Math.round(cosParameter + cosParameter * Math.cos(scrollCount))
-            );
-            oldTimestamp = newTimestamp;
-            window.requestAnimationFrame(step);
-        }
-        window.requestAnimationFrame(step);
-    }
 
     render() {
         const {
@@ -64,8 +46,9 @@ class Templates extends Component {
         } = this.props;
         return (
             <div className='templates'>
+                <ScrollToTop />
                 <Helmet>
-                    <title>My Title</title>
+                    <title>Шаблоны</title>
                     <meta name='description' content='Helmet application' />
                 </Helmet>
                 <h3 className='templates__title'> Шаблоны </h3>
