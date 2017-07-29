@@ -4,6 +4,7 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import Categories from '../categories';
 import Templates from '../templates';
+import Paginator from '../paginator';
 import './index.styl';
 
 @withRouter
@@ -52,22 +53,38 @@ class Main extends Component {
                                 </Switch>
                             </div>
                             <div className='main__right'>
-                            
-                                    <Switch key={location.key}>
-                                        {paths.map((path, index) =>
+                                    <div className='main__right-inner'>
+                                        <CSSTransitionGroup
+                                                transitionName='router'
+                                                transitionAppear={true}
+                                                transitionAppearTimeout={600}
+                                                transitionEnterTimeout={600}
+                                                transitionLeaveTimeout={200}
+                                        >
+                                        <Switch key={location.key}>
                                             <Route
-                                                key={index}
                                                 exact
-                                                path={path}
+                                                path={paths}
                                                 component={Templates}
                                             />
-                                        )}
+                                            {/*paths.map((path, index) =>
+                                                <Route
+                                                    key={index}
+                                                    exact
+                                                    path={path}
+                                                    component={Templates}
+                                                />
+                                            )*/}
 
-                                        <Route
-                                            path='*'
-                                            render={props => <h3>404</h3>}
-                                        />
-                                    </Switch>
+
+                                            <Route
+                                                path='*'
+                                                render={props => <h3>404</h3>}
+                                            />
+                                        </Switch>
+                                        </CSSTransitionGroup>
+                                        <Paginator/>
+                                    </div>
 
                             </div>
                         </div>

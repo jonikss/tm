@@ -27,23 +27,46 @@
         col('md', 8)
         display flex
 
-.router-enter {
-  opacity: 0;
-  transform: translateX(-250px);
-}
-.router-enter.router-enter-active {
-  opacity: 1;
-  transform: translateX(0);
-  transition: 3s;
-}
+    &__right-inner
+        width 100%
 
-.router-leave {
-  opacity: 1;
-  transform: translateX(0);
-}
+.router-enter
+    opacity 0
+    //transform translateX(-250px)
 
-.router-leave.router-leave-active {
-  opacity: 0;
-  transform: translateX(250px);
-  transition: 3s;
-}
+.router-enter.router-enter-active
+    opacity 1
+    //transform translateX(0)
+    transition .6s
+
+.router-leave
+    opacity: 1;
+    //transform: translateX(0);
+
+
+.router-leave.router-leave-active
+    opacity: 0;
+    //transform: translateX(250px);
+    transition: .6s;
+
+
+.templates-enter
+    opacity 0.01
+    transform translateX(-100%)
+
+
+.templates-enter.templates-enter-active
+    opacity 1
+    transform translateX(0)
+    transition opacity 1s ease-in, transform 1s ease-in
+
+
+.templates-leave
+    opacity 1
+    transform translateX(0)
+
+
+.templates-leave.templates-leave-active
+    opacity 0.01
+    transform translateX(0)
+    transition opacity 1s ease-in, transform 1s ease-in

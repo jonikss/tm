@@ -16,7 +16,7 @@ export default (state = initialState, {type, payload, error}) => {
         case FETCH_TEMPLATES_REQUEST:
             return {...state, loading: true};
         case FETCH_TEMPLATES_SUCCESS:
-            return {...state, loading: false, items: payload.templates, page: payload.page, pages: payload.pages, count: payload.count, error: false};
+            return {...state, loading: false, items: payload.templates, error: false};
         case FETCH_TEMPLATES_FAILURE:
             return {...state, loading: false, error: true, items:[], errorMsg: payload};
         default:

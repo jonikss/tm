@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import './index.styl';
 import Template from '../template';
-import Paginator from '../paginator';
 import ScrollToTop from '../scrolltotop';
-
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -22,6 +20,7 @@ class Templates extends Component {
     componentDidMount() {
         const { match } = this.props;
         this.props.fetchTemplates(match.url);
+        console.log('componentDidMount')
     }
 
     componentDidUpdate(nextProps) {
@@ -30,8 +29,6 @@ class Templates extends Component {
             this.props.fetchTemplates(match.url);
         }
     }
-
-
 
     render() {
         const {
@@ -52,30 +49,24 @@ class Templates extends Component {
                     <meta name='description' content='Helmet application' />
                 </Helmet>
                 <h3 className='templates__title'> Шаблоны </h3>
+
                 {
                     loading
                     ?   <p className='templates__loading'> Идет загрузка </p>
-                    :   <div>
-                            <div className='templates__items'>
-                                {items && items.length > 0
-                                    ? items.map(item =>
-                                        <div
-                                            key={item.template_id}
-                                            className='templates__item'>
-                                            <Template {...item} />
-                                        </div>
-                                    )
-                                    : ''}
-                          </div>
-                          <div className='templates__paginator'>
-                                <Paginator
-                                    pages={pages}
-                                    page={page}
-                                    match={match}
-                                />
-                          </div>
+                    :
+                        <div className='templates__items'>
+                            {items && items.length > 0
+                                ? items.map(item =>
+                                    <div
+                                        key={item.template_id}
+                                        className='templates__item'>
+                                        <Template {...item} />
+                                    </div>
+                                )
+                                : ''}
                         </div>
-                  }
+                }
+
             </div>
         );
     }

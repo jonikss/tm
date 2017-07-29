@@ -1,4 +1,4 @@
-
+import {setPaginator} from './paginator';
 export const FETCH_TEMPLATES_REQUEST = 'FETCH_TEMPLATES_REQUEST';
 export const FETCH_TEMPLATES_FAILURE = 'FETCH_TEMPLATES_FAILURE';
 export const FETCH_TEMPLATES_SUCCESS = 'FETCH_TEMPLATES_SUCCESS';
@@ -23,6 +23,7 @@ export const  fetchTemplates = (path = '') => async (dispatch, getState) => {
             payload: templatesData,
             error: false
         });
+        dispatch(setPaginator(templatesData));
     } catch (error) {
         console.log('error', error)
         dispatch({
