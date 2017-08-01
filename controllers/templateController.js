@@ -10,8 +10,8 @@ exports.getTemplates = async(req, res, next) => {
     const sort = req.params.sort || 'desc';
     const limit = 24;
     const skip = (page * limit) - limit;
-    let categories;
-    let tags;
+    const categories = req.categories;
+    const tags = req.tags;
 
     if(!page) {
         throw new BadRequestError('Incorrect page param');
@@ -19,33 +19,6 @@ exports.getTemplates = async(req, res, next) => {
 
     if(!(sort === 'desc' || sort === 'asc')) {
         throw new BadRequestError('Incorrect sort param');
-    }
-
-    if(req.params.categories) {
-
-        categories = req.params.categories.split(',').map(Math.abs);
-
-        if(categories.some(cat => !cat)) {
-            throw new BadRequestError('Incorrect ids');
-        }
-
-        const allCategories = await Template.getFullCategoriesList();
-        const categoryIds = allCategories.map(cat => cat._id);
-
-        if(!categories.every(cat => categoryIds.includes(cat))) {
-            throw new BadRequestError('Not existing ids');
-        }
-    }
-
-    if(req.params.tags) {
-        tags = req.params.tags.split(',');
-
-        const allTags = await Template.getAllTags();
-        const allTagsArray = allTags.map(tag => tag._id);
-
-        if(!tags.every(tag => allTagsArray.includes(tag))) {
-            throw new BadRequestError('Not existing tags');
-        }
     }
 
     const [templates, count] = await Template.getTemplatesAndCount({
@@ -115,8 +88,9 @@ exports.getTemplate = async (req, res, next) => {
 }
 
 
-exports.getAllTags = async(req, res) => {
-    let tags = await Template.getAllTags();
+exports.getTags = async(req, res) => {
+    const categoriesArray = req.categories;
+    let tags = await Template.getTags(categoriesArray);
     tags = tags.map(tag => {return {name:tag._id, count:tag.count}});
     res.json(tags);
 };
@@ -141,3 +115,51 @@ exports.getImg = async(req, res) => {
 
     request(url).pipe(res);
 };
+
+exports.validateCategoriesParams = async(req, res, next, categories) => {
+
+    try {
+        const categoriesArray = categories.split(',').map(Math.abs);
+
+        if(categoriesArray.some(cat => !cat)) {
+            throw new BadRequestError('Incorrect categories ids');
+        }
+
+        const allCategories = await Template.getFullCategoriesList();
+        const categoryIds = allCategories.map(cat => cat._id);
+
+        if(!categoriesArray.every(cat => categoryIds.includes(cat))) {
+            throw new BadRequestError('Not existing ids');
+        }
+
+        req.categories = categoriesArray;
+
+        next();
+
+    } catch (err) {
+        next(err);
+    }
+
+}
+
+exports.validateTagsParams = async(req, res, next, tags) => {
+
+    try {
+        const tagsArray = req.params.tags.split(',');
+
+        const allTags = await Template.getTags();
+        const allTagsArray = allTags.map(tag => tag._id);
+
+        if(!tagsArray.every(tag => allTagsArray.includes(tag))) {
+            throw new BadRequestError('Not existing tags');
+        }
+
+        req.tags = tagsArray;
+
+        next();
+
+    } catch (err) {
+        next(err);
+    }
+
+}

@@ -69,8 +69,19 @@ templateSchema.statics.getTemplate = function(id) {
     });
 };
 
-templateSchema.statics.getAllTags = function() {
-    return this.aggregate([{
+templateSchema.statics.getTags = function(categories) {
+    console.log(categories)
+    let search = {};
+
+    if(categories) {
+        search = {categories: { $in : categories }};
+    }
+
+    return this.aggregate([
+        {
+            $match: search
+        },
+        {
             $unwind: '$keywords'
         },
         {

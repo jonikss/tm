@@ -7,6 +7,9 @@ const templateController = require('../controllers/templateController');
 
 const app = express();
 
+router.param('categories', templateController.validateCategoriesParams);
+router.param('tags', templateController.validateTagsParams); 
+
 // Do work here
 router.get('/', (req, res) => {
   res.json('Api works!');
@@ -53,9 +56,10 @@ router.get(
 
 router.get(
     [
-        '/tags'
+        '/tags',
+        '/tags/categories/:categories'
     ],
-    catchErrors(templateController.getAllTags)
+    catchErrors(templateController.getTags)
 );
 
 router.get(
