@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import './index.styl';
 import Template from '../template';
+import Tags from '../tags';
 import ScrollToTop from '../scrolltotop';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import * as templatesActions from '../../actions/templates';
 import { Helmet } from 'react-helmet';
 
@@ -49,6 +50,14 @@ class Templates extends Component {
                     <meta name='description' content='Helmet application' />
                 </Helmet>
                 <h3 className='templates__title'> Шаблоны </h3>
+
+                <Switch>
+                    <Route
+                        path={'/categories/:categories/'}
+                        component={Tags}
+                    />
+                    <Route path={'/'} component={Tags} />
+                </Switch>
 
                 {
                     loading
